@@ -1,5 +1,8 @@
+// app/page.tsx (SERVER)
 import { supabase } from "./lib/supabaseClient";
-import TerriCard from "./components/TerriCard";
+import TerritoryList from "./TerritoryList";
+
+export const revalidate = 0;
 
 export default async function Home() {
   const { data, error } = await supabase
@@ -17,16 +20,9 @@ export default async function Home() {
         <h1>Tusmørke</h1>
         <h2>Territorier</h2>
       </div>
-      {data?.map((t) => (
-        <TerriCard
-          key={t.id}
-          id={t.id}
-          name={t.name}
-          foged={!!t.foged}
-          closed={!!t.closed}
-          color={t.color ?? "#d1d5db"}
-        />
-      ))}
+
+      {/* ← nu håndterer TerritoryList realtime-opdateringer */}
+      <TerritoryList initialRows={data ?? []} />
     </main>
   );
 }
